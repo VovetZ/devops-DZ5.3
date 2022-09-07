@@ -2,18 +2,6 @@
 
 # Домашнее задание к занятию "5.3. Введение. Экосистема. Архитектура. Жизненный цикл Docker контейнера"
 
-## Как сдавать задания
-
-Обязательными к выполнению являются задачи без указания звездочки. Их выполнение необходимо для получения зачета и диплома о профессиональной переподготовке.
-
-Задачи со звездочкой (*) являются дополнительными задачами и/или задачами повышенной сложности. Они не являются обязательными к выполнению, но помогут вам глубже понять тему.
-
-Домашнее задание выполните в файле readme.md в github репозитории. В личном кабинете отправьте на проверку ссылку на .md-файл в вашем репозитории.
-
-Любые вопросы по решению задач задавайте в чате учебной группы.
-
----
-
 ## Задача 1
 
 Сценарий выполения задачи:
@@ -35,15 +23,10 @@ Hey, Netology
 ```
 Опубликуйте созданный форк в своем репозитории и предоставьте ответ в виде ссылки на https://hub.docker.com/username_repo.
 
-Полное описание процесса:
+## Решение
 
-<details>
-     <summary>Решение Задачи 1</summary>
-    <br>
-
-Регистрируемся [hub.docker.com](https://hub.docker.com/)
-Образ буду использовать nginx:stable-alpine - 1.20.2 на момент выполнения.
-
+- Регистрируемся [hub.docker.com](https://hub.docker.com/)
+- Скачиваем образ nginx:stable  (1.22.0) на момент выполнения.
 
 ```bash
 iva@c8:~/Documents/docker $ docker pull nginx:stable-alpine
@@ -53,7 +36,20 @@ nginx        stable          d6c9558ba445   2 days ago     141MB
 nginx        1.21.6-alpine   bef258acf10d   3 days ago     23.4MB
 nginx        1.21.5-alpine   cc44224bfe20   4 weeks ago    23.5MB
 nginx        stable-alpine   373f8d4d4c60   2 months ago   23.2MB
+```
+- Готовим Dockerfile вида
 
+```
+
+```
+
+- Готовим index.html вида
+
+```
+```
+
+- Собираем образ
+```bash
 iva@c8:~/Documents/docker $ docker build -t egerpro/nginx-nl:1.20.2 .
 Sending build context to Docker daemon   5.12kB
 Step 1/2 : FROM nginx:1.20.2-alpine
@@ -73,7 +69,7 @@ nginx              1.20.2-alpine   373f8d4d4c60   2 months ago     23.2MB
 nginx              stable-alpine   373f8d4d4c60   2 months ago     23.2MB
 ```
 
-Запускаем контейнер, тестируем
+- Запускаем контейнер, тестируем
 ```bash
 iva@c8:~/Documents/docker $ docker run --name test-page -p 80:80 -d egerpro/nginx-nl:1.20.2 
 b42c9de835840b2916fbfaf68d0004ded071e921cb5dd6c0e00d0ce01a3f1362
@@ -84,29 +80,12 @@ iva@c8:~/Documents/docker $ curl localhost
     <h1>I’m DevOps Engineer!</h1>
     </body>
 </html>
-```
-ещё пару проверок:
-```bash
 iva@c8:~/Documents/docker $ docker ps
 CONTAINER ID   IMAGE                     COMMAND                  CREATED          STATUS          PORTS                               NAMES
 b42c9de83584   egerpro/nginx-nl:1.20.2   "/docker-entrypoint.…"   52 seconds ago   Up 50 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   test-page
-iva@c8:~/Documents/docker $ docker stop $(docker ps -a -q)
-b42c9de83584
-iva@c8:~/Documents/docker $ docker rm $(docker ps -a -q)
-b42c9de83584
-iva@c8:~/Documents/docker $ docker exec -it for_test_nginx sh
-/ # 
-/ # cat /usr/share/nginx/html/index.html 
-<html>
-    <head>Hey, Netology</head>
-    <body>
-    <h1>I’m DevOps Engineer!</h1>
-    </body>
-</html>
-/ # 
 ```
 
-Push-им и чистим локальное ранее загруженные/созданные образы
+- Push-им и чистим локальное ранее загруженные/созданные образы
 ```bash
 va@c8:~/Documents/docker $ docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
@@ -159,27 +138,6 @@ egerpro/nginx-nl   1.20.2    1cbb7153fe19   26 minutes ago   23.2MB
 
 ссылка на docker-репозиторий: https://hub.docker.com/repository/docker/egerpro/nginx-nl
 
-</details>
-
-[содержимое докер файла](./src/build/docker/)
-
-```bash
-iva@c8:~/Documents/docker $ docker pull egerpro/nginx-nl:1.20.2
-1.20.2: Pulling from egerpro/nginx-nl
-97518928ae5f: Pull complete 
-a15dfa83ed30: Pull complete 
-acae0b19bbc1: Pull complete 
-fd4282442678: Pull complete 
-b521ea0d9e3f: Pull complete 
-b3282d03aa58: Pull complete 
-a0be8eca73e4: Pull complete 
-Digest: sha256:9f4de94ec42951ec4ee27468ca63f9c8a4c67d6b5ac58fb7556db5b83b3a2b91
-Status: Downloaded newer image for egerpro/nginx-nl:1.20.2
-docker.io/egerpro/nginx-nl:1.20.2
-iva@c8:~/Documents/docker $ docker images
-REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
-egerpro/nginx-nl   1.20.2    1cbb7153fe19   26 minutes ago   23.2MB
-```
 
 https://hub.docker.com/repository/docker/egerpro/nginx-nl
 
