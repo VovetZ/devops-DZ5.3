@@ -47,7 +47,7 @@ nginx        stable    1b84ed9be2d4   2 weeks ago   142MB
 - Готовим Dockerfile вида
 
 ```
-FROM nginx:1.22.0-stable
+FROM nginx:stable
 COPY index.html /usr/share/nginx/html/
 ```
 
@@ -64,97 +64,60 @@ COPY index.html /usr/share/nginx/html/
 
 - Собираем образ
 ```bash
-iva@c8:~/Documents/docker $ docker build -t egerpro/nginx-nl:1.20.2 .
-Sending build context to Docker daemon   5.12kB
-Step 1/2 : FROM nginx:1.20.2-alpine
- ---> 373f8d4d4c60
+vk@vk-desktop:~/Docker/nginx$ sudo docker build -t vkuzevanov/nginx-netology:1.22.0 .
+Sending build context to Docker daemon  15.87kB
+Step 1/2 : FROM nginx:stable
+ ---> 1b84ed9be2d4
 Step 2/2 : COPY index.html /usr/share/nginx/html/
- ---> 1cbb7153fe19
-Successfully built 1cbb7153fe19
-Successfully tagged egerpro/nginx-nl:1.20.2
-iva@c8:~/Documents/docker $ docker images
-REPOSITORY         TAG             IMAGE ID       CREATED          SIZE
-egerpro/nginx-nl   1.20.2          1cbb7153fe19   14 seconds ago   23.2MB
-egerpro/nginx-nl   stable-alpine   0178cd9e55c1   8 minutes ago    23.2MB
-nginx              stable          d6c9558ba445   2 days ago       141MB
-nginx              1.21.6-alpine   bef258acf10d   3 days ago       23.4MB
-nginx              1.21.5-alpine   cc44224bfe20   4 weeks ago      23.5MB
-nginx              1.20.2-alpine   373f8d4d4c60   2 months ago     23.2MB
-nginx              stable-alpine   373f8d4d4c60   2 months ago     23.2MB
+ ---> 2d96954b90cf
+Successfully built 2d96954b90cf
+Successfully tagged vkuzevanov/nginx-netology:1.22.0
+vk@vk-desktop:~/Docker/nginx$ sudo docker images
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+vkuzevanov/nginx-netology   1.22.0    2d96954b90cf   40 seconds ago   142MB
+nginx                       stable    1b84ed9be2d4   2 weeks ago      142MB
 ```
 
 - Запускаем контейнер, тестируем
 ```bash
-iva@c8:~/Documents/docker $ docker run --name test-page -p 80:80 -d egerpro/nginx-nl:1.20.2 
-b42c9de835840b2916fbfaf68d0004ded071e921cb5dd6c0e00d0ce01a3f1362
-iva@c8:~/Documents/docker $ curl localhost
+vk@vk-desktop:~/Docker/nginx$ sudo docker run -d --name test-netology-page -p 8080:80 vkuzevanov/nginx-netology:1.22.0
+ab2d72d2106df945a317e4cf45e69ccefe52c1e070b8031455e61fd8052230ca
+vk@vk-desktop:~/Docker/nginx$ curl localhost:8080
 <html>
     <head>Hey, Netology</head>
     <body>
-    <h1>I’m DevOps Engineer!</h1>
+	<h1>I’m DevOps Engineer!</h1>
     </body>
 </html>
-iva@c8:~/Documents/docker $ docker ps
-CONTAINER ID   IMAGE                     COMMAND                  CREATED          STATUS          PORTS                               NAMES
-b42c9de83584   egerpro/nginx-nl:1.20.2   "/docker-entrypoint.…"   52 seconds ago   Up 50 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   test-page
+vk@vk-desktop:~/Docker/nginx$ sudo docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+ab2d72d2106d   vkuzevanov/nginx-netology:1.22.0   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   test-netology-page
 ```
 
-- Push-им и чистим локальное ранее загруженные/созданные образы
+- Push-им созданный образ
 ```bash
-va@c8:~/Documents/docker $ docker login
+vk@vk-desktop:~/Docker/nginx$ sudo docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: egerpro
+Username: vkuzevanov
 Password: 
-WARNING! Your password will be stored unencrypted in /home/iva/.docker/config.json.
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
-
-iva@c8:~/Documents/docker $ docker push egerpro/nginx-nl:1.20.2
-The push refers to repository [docker.io/egerpro/nginx-nl]
-fb7dd72084b1: Pushed 
-6f44c5b5d074: Mounted from library/nginx 
-002fcf848e67: Mounted from library/nginx 
-e419fa208fe1: Mounted from library/nginx 
-112ee9c2903a: Mounted from library/nginx 
-68e5252d0d33: Mounted from library/nginx 
-1a058d5342cc: Mounted from library/nginx 
-1.20.2: digest: sha256:9f4de94ec42951ec4ee27468ca63f9c8a4c67d6b5ac58fb7556db5b83b3a2b91 size: 1775
-
-iva@c8:~/Documents/docker $ docker rmi -f $(docker images -aq)
-Untagged: egerpro/nginx-nl:1.20.2
-...
-
-iva@c8:~/Documents/docker $ docker images
-REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+vk@vk-desktop:~/Docker/nginx$ sudo docker push vkuzevanov/nginx-netology:1.22.0
+The push refers to repository [docker.io/vkuzevanov/nginx-netology]
+d1c19334752a: Pushed 
+9760b00a1245: Mounted from library/nginx 
+053c9e98185f: Mounted from library/nginx 
+fdf60923d025: Mounted from library/nginx 
+59dc71c10295: Mounted from library/nginx 
+e08753aa4850: Mounted from library/nginx 
+6485bed63627: Mounted from library/nginx 
+1.22.0: digest: sha256:46252f177d48200f47dbcb1408fa0adf045cfdc4a293056ccaeb9122115250d0 size: 1777
 ```
 
-загружаем заново
-
-```bash
-iva@c8:~/Documents/docker $ docker pull egerpro/nginx-nl:1.20.2
-1.20.2: Pulling from egerpro/nginx-nl
-97518928ae5f: Pull complete 
-a15dfa83ed30: Pull complete 
-acae0b19bbc1: Pull complete 
-fd4282442678: Pull complete 
-b521ea0d9e3f: Pull complete 
-b3282d03aa58: Pull complete 
-a0be8eca73e4: Pull complete 
-Digest: sha256:9f4de94ec42951ec4ee27468ca63f9c8a4c67d6b5ac58fb7556db5b83b3a2b91
-Status: Downloaded newer image for egerpro/nginx-nl:1.20.2
-docker.io/egerpro/nginx-nl:1.20.2
-iva@c8:~/Documents/docker $ docker images
-REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
-egerpro/nginx-nl   1.20.2    1cbb7153fe19   26 minutes ago   23.2MB
-```
-
-ссылка на docker-репозиторий: https://hub.docker.com/repository/docker/egerpro/nginx-nl
-
-
-https://hub.docker.com/repository/docker/egerpro/nginx-nl
-
+ссылка на docker-репозиторий: (https://hub.docker.com/repository/docker/vkuzevanov/nginx-netology)
 
 ## Задача 2
 
