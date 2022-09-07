@@ -29,13 +29,20 @@ Hey, Netology
 - Скачиваем образ nginx:stable  (1.22.0) на момент выполнения.
 
 ```bash
-iva@c8:~/Documents/docker $ docker pull nginx:stable-alpine
-iva@c8:~/Documents/docker $ docker images
-REPOSITORY   TAG             IMAGE ID       CREATED        SIZE
-nginx        stable          d6c9558ba445   2 days ago     141MB
-nginx        1.21.6-alpine   bef258acf10d   3 days ago     23.4MB
-nginx        1.21.5-alpine   cc44224bfe20   4 weeks ago    23.5MB
-nginx        stable-alpine   373f8d4d4c60   2 months ago   23.2MB
+vk@vk-desktop:~/Docker/nginx$ sudo docker pull nginx:stable
+stable: Pulling from library/nginx
+7a6db449b51b: Pull complete 
+139f0492fc3f: Pull complete 
+54186ccb0ecc: Pull complete 
+397e52387904: Pull complete 
+3346bded5d4c: Pull complete 
+90a40225b3c0: Pull complete 
+Digest: sha256:f2dfca5620b64b8e5986c1f3e145735ce6e291a7dc3cf133e0a460dca31aaf1f
+Status: Downloaded newer image for nginx:stable
+docker.io/library/nginx:stable
+vk@vk-desktop:~/Docker/nginx$ sudo docker images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+nginx        stable    1b84ed9be2d4   2 weeks ago   142MB
 ```
 - Готовим Dockerfile вида
 
@@ -46,7 +53,13 @@ COPY index.html /usr/share/nginx/html/
 
 - Готовим index.html вида
 
-```
+```html
+<html>
+    <head>Hey, Netology</head>
+    <body>
+        <h1>I’m DevOps Engineer!</h1>
+    </body>
+</html>
 ```
 
 - Собираем образ
